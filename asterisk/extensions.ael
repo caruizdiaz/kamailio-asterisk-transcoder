@@ -1,0 +1,16 @@
+context transcoder {
+
+        _.      => {
+
+                Set(SIP_CODEC=alaw);
+                Set(RURI=${SIP_HEADER(X-RURI)});
+
+                NoOp(${RURI});
+                if ("${EXTEN}" != "h") {
+                        SipAddHeader(X-RURI: ${RURI});
+
+                        // replace 192.168.2.97:5075 for the IP of your kamailio
+                        Dial(SIP/${EXTEN}@192.168.2.97:5075,40,rt);
+                }
+        }
+}
